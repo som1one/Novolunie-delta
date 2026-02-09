@@ -1,0 +1,274 @@
+/* Splash Screen */
+.splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background: var(--bg-primary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.8s ease-out, visibility 0.8s ease-out;
+}
+
+body:has(.splash-screen:not(.hidden)) {
+    overflow: hidden;
+}
+
+.splash-screen.hidden {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+}
+
+.splash-content {
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-lg);
+}
+
+.splash-logo {
+    margin-bottom: var(--spacing-md);
+    opacity: 0;
+    transform: scale(0.8);
+    animation: splashLogoAppear 1s ease-out 0.3s forwards;
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-tertiary);
+    box-shadow: 0 0 40px rgba(192, 192, 192, 0.2), 
+                0 0 80px rgba(192, 192, 192, 0.1),
+                inset 0 0 20px rgba(0, 0, 0, 0.3);
+}
+
+.splash-logo-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.9;
+    filter: drop-shadow(0 0 20px rgba(192, 192, 192, 0.4));
+}
+
+@media (min-width: 768px) {
+    .splash-logo {
+        width: 180px;
+        height: 180px;
+    }
+}
+
+.splash-title {
+    margin-bottom: var(--spacing-md);
+    opacity: 0;
+    transform: translateY(30px);
+    animation: splashTitleAppear 1s ease-out 0.6s forwards;
+}
+
+.splash-title-main {
+    display: block;
+    font-family: var(--font-heading);
+    font-size: clamp(48px, 12vw, 96px);
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    color: var(--text-primary);
+    margin-bottom: var(--spacing-xs);
+    text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+}
+
+.splash-title-subtitle {
+    display: block;
+    font-size: clamp(14px, 3vw, 20px);
+    font-weight: 300;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    margin-top: var(--spacing-xs);
+}
+
+.splash-tagline-top {
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 400;
+    color: var(--text-primary);
+    letter-spacing: 0.05em;
+    opacity: 0;
+    transform: translateY(-10px);
+    animation: splashTaglineAppear 1s ease-out 0.2s forwards;
+    margin-bottom: var(--spacing-lg);
+    text-align: center;
+}
+
+.splash-tagline {
+    font-size: clamp(16px, 4vw, 24px);
+    font-weight: 500;
+    color: var(--accent-silver);
+    letter-spacing: 0.1em;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: splashTaglineAppear 1s ease-out 0.9s forwards;
+}
+
+@keyframes splashLogoAppear {
+    0% {
+        opacity: 0;
+        transform: scale(0.8) translateY(-20px);
+    }
+    50% {
+        transform: scale(1.05) translateY(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+@keyframes splashTitleAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes splashTaglineAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Пульсация логотипа */
+@keyframes splashLogoPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 0 40px rgba(192, 192, 192, 0.2), 
+                    0 0 80px rgba(192, 192, 192, 0.1),
+                    inset 0 0 20px rgba(0, 0, 0, 0.3);
+        filter: drop-shadow(0 0 20px rgba(192, 192, 192, 0.4));
+    }
+    50% {
+        transform: scale(1.05);
+        box-shadow: 0 0 60px rgba(192, 192, 192, 0.3), 
+                    0 0 120px rgba(192, 192, 192, 0.15),
+                    inset 0 0 30px rgba(0, 0, 0, 0.4);
+        filter: drop-shadow(0 0 30px rgba(192, 192, 192, 0.6));
+    }
+}
+
+.splash-logo {
+    animation: splashLogoAppear 1s ease-out 0.3s forwards,
+               splashLogoPulse 3s ease-in-out infinite 1.5s;
+}
+
+/* Свечение заголовка */
+@keyframes splashTitleGlow {
+    0%, 100% {
+        text-shadow: 0 0 30px rgba(255, 255, 255, 0.1);
+    }
+    50% {
+        text-shadow: 0 0 50px rgba(255, 255, 255, 0.2), 0 0 80px rgba(192, 192, 192, 0.1);
+    }
+}
+
+.splash-title-main {
+    animation: splashTitleGlow 3s ease-in-out infinite 1.8s;
+}
+
+/* Кнопка в заставке */
+.splash-cta-button {
+    margin-top: var(--spacing-xl);
+    padding: 20px 40px;
+    background: transparent;
+    border: 1px solid rgba(192, 192, 192, 0.3);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-family: var(--font-body);
+    font-size: clamp(14px, 3.5vw, 18px);
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    position: relative;
+    overflow: hidden;
+    opacity: 0;
+    transform: translateY(20px);
+    animation: splashButtonAppear 1s ease-out 1.2s forwards;
+    transition: all 0.3s ease;
+    min-width: 280px;
+    background: radial-gradient(circle at center, rgba(20, 20, 20, 0.4) 0%, transparent 70%);
+}
+
+.splash-cta-button:hover {
+    border-color: rgba(192, 192, 192, 0.5);
+    background: radial-gradient(circle at center, rgba(20, 20, 20, 0.6) 0%, transparent 70%);
+    box-shadow: 0 0 30px rgba(192, 192, 192, 0.2);
+    transform: translateY(-2px);
+}
+
+.splash-cta-button:active {
+    transform: translateY(0);
+}
+
+.splash-lock-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+    color: var(--accent-silver);
+    transition: transform 0.3s ease;
+}
+
+.splash-cta-button:hover .splash-lock-icon {
+    transform: scale(1.1);
+}
+
+.splash-button-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    line-height: 1.2;
+    gap: 2px;
+}
+
+.splash-button-line-1,
+.splash-button-line-2 {
+    display: block;
+}
+
+@keyframes splashButtonAppear {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 767px) {
+    .splash-cta-button {
+        min-width: 240px;
+        padding: 18px 32px;
+        font-size: clamp(12px, 3vw, 16px);
+    }
+}

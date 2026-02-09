@@ -1,0 +1,13 @@
+.git
+.gitignore
+node_modules
+*.md
+deploy.sh
+docker-compose.yml
+Dockerfile
+.dockerignore
+__pycache__
+*.pyc
+.env
+.vscode
+.idea

@@ -1,0 +1,20 @@
+/* Footer */
+.footer {
+    background: var(--bg-primary);
+    padding: var(--spacing-md) 0;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-text {
+    font-size: 14px;
+    color: var(--text-muted);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    transition: opacity var(--transition-fast);
+}
+
+.footer:hover .footer-text {
+    opacity: 1;
+}

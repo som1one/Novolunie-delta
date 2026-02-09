@@ -1,0 +1,17 @@
+/* Main Stylesheet - импорт всех модулей */
+@import url('variables.css');
+@import url('base.css');
+@import url('animations.css');
+@import url('splash.css');
+@import url('hero.css');
+@import url('directions.css');
+@import url('for-whom.css');
+@import url('preorder.css');
+@import url('footer.css');
+
+/* Scroll animations */
+@media (prefers-reduced-motion: no-preference) {
+    .direction-block {
+        transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+}
