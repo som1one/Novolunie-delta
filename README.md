@@ -70,7 +70,9 @@ docker compose ps
 
 ## 📝 Документация
 
+- [SERVER_SETUP.md](SERVER_SETUP.md) - **Настройка пустого сервера Ubuntu (начните отсюда!)**
 - [DOCKER_DEPLOY.md](DOCKER_DEPLOY.md) - Инструкция по деплою через Docker
+- [DOCKER_RATE_LIMIT_FIX.md](DOCKER_RATE_LIMIT_FIX.md) - Решение проблемы Docker Hub Rate Limit
 - [DEPLOY.md](DEPLOY.md) - Альтернативные способы деплоя
 - [GIT_SETUP.md](GIT_SETUP.md) - Настройка Git репозитория
 - [PLAN.md](PLAN.md) - План разработки
