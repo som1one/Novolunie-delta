@@ -33,7 +33,20 @@ chmod +x migrate-to-nginx.sh
 ./migrate-to-nginx.sh
 ```
 
-### После миграции - обновление сайта:
+### Настройка HTTPS (если сертификаты уже есть)
+
+### Автоматический способ:
+
+```bash
+cd ~/novolunie
+git pull origin main
+chmod +x setup-nginx-https.sh
+./setup-nginx-https.sh
+```
+
+Скрипт автоматически найдет SSL сертификаты и настроит HTTPS.
+
+## После миграции - обновление сайта:
 
 ```bash
 cd ~/novolunie
