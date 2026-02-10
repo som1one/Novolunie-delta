@@ -2,12 +2,10 @@
 
 ## Обновление проекта из Git (если есть конфликты)
 
-### Если Git не может обновиться из-за локальных изменений:
+### Быстрое исправление (отменить локальные изменения):
 
 ```bash
 cd ~/novolunie
-git pull origin main
-# Если ошибка, выполните:
 git reset --hard HEAD
 git pull origin main
 chmod +x *.sh
@@ -17,6 +15,7 @@ chmod +x *.sh
 
 ```bash
 cd ~/novolunie
+git reset --hard HEAD
 git pull origin main
 chmod +x update-from-git.sh
 ./update-from-git.sh
