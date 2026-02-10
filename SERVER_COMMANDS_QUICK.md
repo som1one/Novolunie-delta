@@ -32,6 +32,28 @@ curl -I http://85.239.44.197
 docker compose logs -f
 ```
 
+## Открытие портов 80 и 443
+
+### Автоматический способ:
+
+```bash
+cd ~/novolunie
+git pull origin main
+chmod +x open-ports.sh
+./open-ports.sh
+```
+
+### Ручной способ (UFW):
+
+```bash
+# Откройте порты в файрволе
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# Проверьте
+sudo ufw status numbered
+```
+
 ## Исправление: Сервер исключен из балансировки (порт 80)
 
 ```bash
