@@ -11,6 +11,8 @@ git pull origin main
 chmod +x *.sh
 ```
 
+⚠️ **ВАЖНО:** Если Git не может обновиться, всегда используйте `git reset --hard HEAD` перед `git pull`
+
 ### Или используйте скрипт:
 
 ```bash
