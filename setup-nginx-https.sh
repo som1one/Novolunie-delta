@@ -13,9 +13,20 @@ echo ""
 CERT_PATHS=(
     "/etc/letsencrypt/live/e-novolunie.ru"
     "/etc/letsencrypt/live/www.e-novolunie.ru"
-    "/etc/ssl/certs"
     "/etc/nginx/ssl"
+    "/etc/ssl/certs"
+    "/root/ssl"
+    "/home/ssl"
 )
+
+# Также проверяем все домены в Let's Encrypt
+if [ -d "/etc/letsencrypt/live" ]; then
+    for domain_dir in /etc/letsencrypt/live/*; do
+        if [ -d "$domain_dir" ]; then
+            CERT_PATHS+=("$domain_dir")
+        fi
+    done
+fi
 
 FOUND_CERT=""
 FOUND_DOMAIN=""
@@ -46,15 +57,42 @@ if [ -z "$FOUND_CERT" ]; then
 fi
 
 if [ -z "$FOUND_CERT" ]; then
-    echo "❌ SSL сертификаты не найдены!"
+    echo "❌ SSL сертификаты не найдены автоматически!"
     echo ""
-    echo "Проверьте вручную:"
-    echo "  sudo ls -la /etc/letsencrypt/live/"
+    echo "Выполните полный поиск:"
+    echo "  chmod +x find-ssl-certificates.sh"
+    echo "  ./find-ssl-certificates.sh"
     echo ""
-    echo "Или получите новые сертификаты:"
-    echo "  sudo apt install certbot python3-certbot-nginx -y"
-    echo "  sudo certbot --nginx -d e-novolunie.ru -d www.e-novolunie.ru"
-    exit 1
+    echo "Если сертификаты были получены через панель Timeweb Cloud:"
+    echo "1. Войдите в панель управления Timeweb Cloud"
+    echo "2. Перейдите: Домены → e-novolunie.ru → SSL"
+    echo "3. Проверьте статус SSL сертификата"
+    echo "4. Если сертификат активирован, но не на сервере - получите через certbot:"
+    echo ""
+    echo "   sudo apt install certbot python3-certbot-nginx -y"
+    echo "   sudo certbot --nginx -d e-novolunie.ru -d www.e-novolunie.ru"
+    echo ""
+    echo "Или используйте временную конфигурацию без SSL:"
+    echo "  ./fix-nginx-ssl.sh"
+    echo ""
+    read -p "Продолжить с получением новых сертификатов через certbot? (y/n) " -n 1 -r
+    echo ""
+    if [[ $REPLY =~ ^[Yy]$ ]]; then
+        echo "Устанавливаем certbot..."
+        sudo apt update
+        sudo apt install certbot python3-certbot-nginx -y
+        echo ""
+        echo "Получаем SSL сертификаты..."
+        sudo certbot --nginx -d e-novolunie.ru -d www.e-novolunie.ru
+        echo ""
+        echo "✅ Сертификаты получены, certbot автоматически обновил конфигурацию Nginx"
+        echo ""
+        echo "Проверьте работу:"
+        echo "  curl -I https://e-novolunie.ru"
+        exit 0
+    else
+        exit 1
+    fi
 fi
 
 echo ""
