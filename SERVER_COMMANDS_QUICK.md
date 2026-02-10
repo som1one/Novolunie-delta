@@ -72,6 +72,34 @@ chmod +x setup-nginx-https.sh
 
 Скрипт автоматически найдет SSL сертификаты и настроит HTTPS.
 
+## Проверка статуса Nginx и сайта
+
+### Полная проверка:
+
+```bash
+cd ~/novolunie
+git pull origin main
+chmod +x check-nginx-status.sh
+./check-nginx-status.sh
+```
+
+### Быстрая проверка:
+
+```bash
+# Статус Nginx
+sudo systemctl status nginx
+
+# Проверка конфигурации
+sudo nginx -t
+
+# Проверка портов
+sudo netstat -tlnp | grep -E ":(80|443) "
+
+# Проверка доступности
+curl -I http://localhost
+curl -I https://localhost
+```
+
 ## После миграции - обновление сайта:
 
 ```bash
