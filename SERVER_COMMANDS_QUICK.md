@@ -1,6 +1,27 @@
 # 🚀 Быстрые команды для сервера
 
-## Обновление сайта из Git
+## Миграция с Docker на чистый Nginx
+
+### Автоматический способ:
+
+```bash
+cd ~/novolunie
+git pull origin main
+chmod +x migrate-to-nginx.sh
+./migrate-to-nginx.sh
+```
+
+### После миграции - обновление сайта:
+
+```bash
+cd ~/novolunie
+git pull origin main
+sudo cp -r index.html styles/ js/ images/ fonts/ /var/www/e-novolunie.ru/
+sudo chown -R www-data:www-data /var/www/e-novolunie.ru
+sudo systemctl reload nginx
+```
+
+## Обновление сайта из Git (Docker)
 
 ```bash
 # Подключитесь к серверу
