@@ -225,17 +225,96 @@ if [ -f "/etc/letsencrypt/live/e-novolunie.ru/fullchain.pem" ]; then
 else
     echo "⚠️  SSL сертификаты не найдены!"
     echo ""
-    echo "Если сертификаты установлены для другого домена, отредактируйте:"
-    echo "  sudo nano /etc/nginx/sites-available/e-novolunie.ru"
+    echo "Создаём временную конфигурацию без SSL (только HTTP)..."
     echo ""
-    echo "Или получите новые сертификаты:"
+    
+    # Создаём конфигурацию без SSL
+    sudo tee /etc/nginx/sites-available/e-novolunie.ru > /dev/null << 'NGINX_HTTP_ONLY'
+# HTTP сервер (временно без HTTPS)
+# После получения SSL сертификатов через certbot, эта конфигурация будет обновлена автоматически
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name e-novolunie.ru www.e-novolunie.ru;
+
+    root /var/www/e-novolunie.ru;
+    index index.html;
+
+    # Логи
+    access_log /var/log/nginx/e-novolunie-access.log;
+    error_log /var/log/nginx/e-novolunie-error.log;
+
+    # Отключаем логирование favicon
+    location = /favicon.ico {
+        log_not_found off;
+        access_log off;
+    }
+
+    # Основная локация - правильная обработка путей
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # Статические файлы с правильными MIME типами
+    location ~* \.(jpg|jpeg|png|gif|ico|svg|webp)$ {
+        expires 30d;
+        add_header Cache-Control "public, max-age=2592000";
+        access_log off;
+        add_header X-Content-Type-Options "nosniff" always;
+    }
+
+    # CSS и JS файлы
+    location ~* \.(css|js)$ {
+        expires 7d;
+        add_header Cache-Control "public, max-age=604800";
+        add_header X-Content-Type-Options "nosniff" always;
+    }
+
+    # Шрифты
+    location ~* \.(woff|woff2|ttf|eot|otf)$ {
+        expires 1y;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+        access_log off;
+        add_header Access-Control-Allow-Origin "*";
+    }
+
+    # Gzip сжатие
+    gzip on;
+    gzip_vary on;
+    gzip_proxied any;
+    gzip_comp_level 6;
+    gzip_min_length 1000;
+    gzip_types 
+        text/plain 
+        text/css 
+        text/xml 
+        text/javascript 
+        application/javascript 
+        application/xml+rss 
+        application/json 
+        application/xml
+        image/svg+xml
+        font/woff
+        font/woff2;
+
+    # Обработка ошибок
+    error_page 404 /index.html;
+    error_page 500 502 503 504 /index.html;
+
+    # Отключаем показ версии Nginx
+    server_tokens off;
+
+    # Увеличиваем размер загружаемых файлов (если нужно)
+    client_max_body_size 10M;
+}
+NGINX_HTTP_ONLY
+    
+    echo "✅ Временная конфигурация без SSL создана"
+    echo ""
+    echo "После запуска Nginx получите SSL сертификаты:"
+    echo "  sudo apt install certbot python3-certbot-nginx -y"
     echo "  sudo certbot --nginx -d e-novolunie.ru -d www.e-novolunie.ru"
-    echo ""
-    read -p "Продолжить без SSL? (y/n) " -n 1 -r
-    echo ""
-    if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-        exit 1
-    fi
 fi
 echo ""
 
