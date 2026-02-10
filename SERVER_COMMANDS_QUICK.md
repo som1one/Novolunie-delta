@@ -33,7 +33,34 @@ chmod +x migrate-to-nginx.sh
 ./migrate-to-nginx.sh
 ```
 
-### Настройка HTTPS (если сертификаты уже есть)
+### Получение SSL сертификатов через Certbot
+
+### Автоматический способ (рекомендуется):
+
+```bash
+cd ~/novolunie
+git pull origin main
+chmod +x get-ssl-certificates.sh
+./get-ssl-certificates.sh
+```
+
+Скрипт автоматически получит сертификаты и настроит HTTPS.
+
+### Ручной способ:
+
+```bash
+# Установите certbot
+sudo apt update
+sudo apt install certbot python3-certbot-nginx -y
+
+# Получите сертификаты (укажите свой email)
+sudo certbot --nginx -d e-novolunie.ru -d www.e-novolunie.ru
+
+# Или без email (не рекомендуется)
+sudo certbot --nginx -d e-novolunie.ru -d www.e-novolunie.ru --register-unsafely-without-email --agree-tos --non-interactive
+```
+
+## Настройка HTTPS (если сертификаты уже есть)
 
 ### Автоматический способ:
 
