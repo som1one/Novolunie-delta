@@ -54,6 +54,39 @@ sudo ufw allow 443/tcp
 sudo ufw status numbered
 ```
 
+## Диагностика: Порты 80 и 443 недоступны
+
+### Полная диагностика:
+
+```bash
+cd ~/novolunie
+git pull origin main
+chmod +x diagnose-ports.sh
+./diagnose-ports.sh
+```
+
+### Быстрое исправление:
+
+```bash
+# 1. Откройте порты в UFW
+sudo ufw allow 80/tcp
+sudo ufw allow 443/tcp
+
+# 2. Остановите системный Nginx (если мешает)
+sudo systemctl stop nginx
+sudo systemctl disable nginx
+
+# 3. Перезапустите контейнер
+cd ~/novolunie
+docker compose restart
+
+# 4. Проверьте
+curl -I http://localhost
+sudo netstat -tlnp | grep -E ":(80|443) "
+```
+
+⚠️ **ВАЖНО:** Если порты всё ещё недоступны, проверьте файрвол провайдера в панели управления!
+
 ## Исправление: Сервер исключен из балансировки (порт 80)
 
 ```bash
