@@ -15,7 +15,27 @@ fatal: Need to specify how to reconcile divergent branches.
 
 ## ✅ Решение
 
-### Способ 1: Автоматический скрипт (РЕКОМЕНДУЕТСЯ)
+### Способ 1: Принудительное обновление (РЕКОМЕНДУЕТСЯ для сервера)
+
+```bash
+cd ~/novolunie
+git fetch origin main
+chmod +x force-pull.sh
+./force-pull.sh
+```
+
+Или вручную:
+```bash
+cd ~/novolunie
+git fetch origin main
+git reset --hard origin/main
+```
+
+Это **полностью перезапишет** локальную ветку удаленной.
+
+---
+
+### Способ 2: Автоматический скрипт (с merge/rebase)
 
 ```bash
 cd ~/novolunie
@@ -32,7 +52,7 @@ chmod +x fix-divergent-branches.sh
 
 ---
 
-### Способ 2: Вручную (быстро)
+### Способ 3: Вручную (быстро)
 
 **Если на сервере НЕ нужно сохранять локальные изменения:**
 
